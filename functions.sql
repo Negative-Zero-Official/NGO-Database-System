@@ -28,13 +28,6 @@ BEGIN
     RETURN is_adopted;
 END //
 
-CREATE FUNCTION EncryptPassword(p_password VARCHAR(255))
-RETURNS VARCHAR(255)
-DETERMINISTIC
-BEGIN
-    RETURN SHA2(p_password, 256); -- Replace with bcrypt in app logic
-END //
-
 CREATE FUNCTION GetUserRole(p_user_id INT)
 RETURNS VARCHAR(20)
 DETERMINISTIC
