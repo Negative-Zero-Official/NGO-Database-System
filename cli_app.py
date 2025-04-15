@@ -311,6 +311,39 @@ class NGOApp:
             'Admin': self.admin_menu
         }.get(role, self.general_menu)()
 
+    def search_ngos_by_location(self):
+        print("\nSearch NGOs by Location")
+        print("1. Search by City")
+        print("2. Search by State") 
+        print("3. Search by Country")
+        choice = input("Choose search type (1-3): ")
+
+        search_types = {1: 'city', 2: 'state', 3: 'country'}
+        search_type = search_types.get(int(choice), None)
+        
+        if not search_type:
+            print("Invalid choice!")
+            return
+
+        search_term = input(f"Enter {search_type} name: ")
+        
+        results = self.db.execute_query(
+            "CALL SearchNGOsByLocation(%s, %s)",
+            (search_type, search_term),
+            fetch=True
+        )
+
+        if not results:
+            print("\nNo NGOs found in this location.")
+            return
+
+        print("\nSearch Results:")
+        for ngo in results:
+            print(f"\nID: {ngo[0]}")
+            print(f"Name: {ngo[1]}")
+            print(f"Description: {ngo[2]}")
+            print(f"Location: {ngo[3]}, {ngo[4]}, {ngo[5]}")
+
     def donor_menu(self):
         while True:
             print("\nDonor Menu")
@@ -319,14 +352,16 @@ class NGOApp:
             print("3. View NGO Reviews")
             print("4. View Upcoming Events")
             print("5. Submit Review")
-            print("6. Logout")
+            print("6. Search NGOs by Location")  # New option
+            print("7. Logout")
             choice = input("Choose: ")
             if choice == '1': self.make_donation()
             elif choice == '2': self.view_ngo_ratings()
             elif choice == '3': self.view_ngo_reviews()
             elif choice == '4': self.view_upcoming_events()
             elif choice == '5': self.submit_review()
-            elif choice == '6': 
+            elif choice == '6': self.search_ngos_by_location()  # New feature
+            elif choice == '7': 
                 self.current_user = None
                 return
             else: print("Invalid choice!")

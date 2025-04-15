@@ -127,4 +127,29 @@ BEGIN
     DEALLOCATE PREPARE stmt;
 END //
 
+DROP PROCEDURE IF EXISTS SearchNGOsByLocation //
+CREATE PROCEDURE SearchNGOsByLocation(
+    IN p_search_type VARCHAR(10),
+    IN p_search_term VARCHAR(100)
+)
+BEGIN
+    CASE p_search_type
+        WHEN 'city' THEN
+            SELECT n.ngo_id, n.name, n.description, l.city, l.state, l.country 
+            FROM NGOs n 
+            JOIN Locations l ON n.location_id = l.location_id 
+            WHERE l.city LIKE CONCAT('%', p_search_term, '%');
+        WHEN 'state' THEN
+            SELECT n.ngo_id, n.name, n.description, l.city, l.state, l.country 
+            FROM NGOs n 
+            JOIN Locations l ON n.location_id = l.location_id 
+            WHERE l.state LIKE CONCAT('%', p_search_term, '%');
+        WHEN 'country' THEN
+            SELECT n.ngo_id, n.name, n.description, l.city, l.state, l.country 
+            FROM NGOs n 
+            JOIN Locations l ON n.location_id = l.location_id 
+            WHERE l.country LIKE CONCAT('%', p_search_term, '%');
+    END CASE;
+END //
+
 DELIMITER ;
