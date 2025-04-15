@@ -181,11 +181,11 @@ INSERT INTO Adoptions (adopter_id, beneficiary_id, adoption_date) VALUES
 (3, 8, '2023-03-10'),
 (4, 9, '2023-04-05'),
 (5, 10, '2023-05-12'),
-(6, 6, '2023-06-18'),
-(7, 7, '2023-07-22'),
-(8, 8, '2023-08-30'),
-(9, 9, '2023-09-14'),
-(10, 10, '2023-10-25');
+(6, 1, '2023-06-18'),
+(7, 2, '2023-07-22'),
+(8, 3, '2023-08-30'),
+(9, 4, '2023-09-14'),
+(10, 5, '2023-10-25');
 
 -- Insert unique data into Trustees table
 INSERT INTO Trustees (user_id, name, email, phone, position, ngo_id) VALUES 
