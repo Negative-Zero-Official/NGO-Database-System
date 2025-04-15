@@ -32,8 +32,8 @@ def check_username_exists(username):
     try:
         conn = connect_to_db()
         cursor = conn.cursor()
-        cursor.execute("SELECT user_id FROM USERS WHERE username = %s", (username,))
-        result = cursor.fetchone()[0]
+        cursor.execute("SELECT user_id FROM users WHERE username = %s", (username,))
+        result = cursor.fetchone()
         return result
     except Error as e:
         print(f"Error: {e}")
@@ -131,41 +131,44 @@ def main():
         print("7. Get NGO average rating")
         print("0. Exit")
         
-        choice = input("Enter your choice: ")
-        
-        if choice == "1":
-            username = input("Enter username: ")
-            exists = check_username_exists(username)
-            print(f"Username exists: {exists}")
-        elif choice == "2":
-            email = input("Enter email: ")
-            exists = check_email_exists(email)
-            print(f"Email exists: {exists}")
-        elif choice == "3":
-            password = input("Enter password: ")
-            valid = validate_password(password)
-            print(f"Password valid: {valid}")
-        elif choice == "4":
-            user_id = int(input("Enter user ID: "))
-            role = get_user_role(user_id)
-            print(f"User role: {role}")
-        elif choice == "5":
-            user_id = int(input("Enter user ID: "))
-            total_donations = get_user_total_donations(user_id)
-            print(f"Total donations by user: {total_donations}")
-        elif choice == "6":
-            ngo_id = int(input("Enter NGO ID: "))
-            total_donations = get_ngo_total_donations(ngo_id)
-            print(f"Total donations to NGO: {total_donations}")
-        elif choice == "7":
-            ngo_id = int(input("Enter NGO ID: "))
-            avg_rating = get_ngo_avg_rating(ngo_id)
-            print(f"NGO average rating: {avg_rating}")
-        elif choice == "0":
-            print("Exiting...")
-            break
-        else:
-            print("Invalid choice. Please try again.")
+        choice = int(input("Enter your choice: "))
+        match choice:
+            case 1:
+                username = input("Enter username: ")
+                exists = check_username_exists(username)
+                if exists:
+                    print(f"Username exists: {exists[0]}")
+                else:
+                    print("User not found")
+            case 2:
+                email = input("Enter email: ")
+                exists = check_email_exists(email)
+                print(f"Email exists: {exists}")
+            case 3:
+                password = input("Enter password: ")
+                valid = validate_password(password)
+                print(f"Password valid: {valid}")
+            case 4:
+                user_id = int(input("Enter user ID: "))
+                role = get_user_role(user_id)
+                print(f"User role: {role}")
+            case 5:
+                user_id = int(input("Enter user ID: "))
+                total_donations = get_user_total_donations(user_id)
+                print(f"Total donations by user: {total_donations}")
+            case 6:
+                ngo_id = int(input("Enter NGO ID: "))
+                total_donations = get_ngo_total_donations(ngo_id)
+                print(f"Total donations to NGO: {total_donations}")
+            case 7:
+                ngo_id = int(input("Enter NGO ID: "))
+                avg_rating = get_ngo_avg_rating(ngo_id)
+                print(f"NGO average rating: {avg_rating}")
+            case 0:
+                print("Exiting...")
+                break
+            case _:
+                print("Invalid choice. Please try again.")
 
 if __name__ == "__main__":
     get_dbs_info()
