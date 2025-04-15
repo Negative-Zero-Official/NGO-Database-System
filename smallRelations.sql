@@ -225,4 +225,29 @@ INSERT INTO Reviews (user_id, ngo_id, rating, review_text) VALUES
 (8, 8, 4, 'Building more than houses - building hope'),
 (9, 9, 5, 'Empowering women to transform their futures'),
 (10, 10, 4, 'Innovative tech solutions for pressing social issues');
+
+INSERT INTO Beneficiaries (name, age, gender, ngo_id, received_support) VALUES
+('Anjali Mehta', 7, 'Female', 2, 'Tree plantation drive participation'),
+('Rohan Desai', 14, 'Male', 2, 'Environmental awareness workshop'),
+('Sneha Kapoor', 12, 'Female', 4, 'Access to clean drinking water'),
+('Arjun Nair', 10, 'Male', 4, 'Sanitation facility improvement'),
+('Kavya Iyer', 9, 'Female', 5, 'Nutritional meal support'),
+('Manoj Verma', 13, 'Male', 5, 'Food distribution during crisis'),
+('Simran Kaur', 8, 'Female', 6, 'Adult literacy program enrollment'),
+('Rajesh Khanna', 11, 'Male', 6, 'Skill development training'),
+('Meera Joshi', 10, 'Female', 7, 'Free medical checkup and medicines'),
+('Vikram Singh', 14, 'Male', 7, 'Health awareness campaign participation');
+
+INSERT INTO Events (name, description, ngo_id, event_date, location) VALUES
+('Clean Energy Summit', 'Promote renewable energy solutions', 2, '2026-03-15', 'Green Conference Hall, LA'),
+('Animal Welfare Workshop', 'Training on animal care and rescue', 3, '2026-04-10', 'Animal Shelter, Chicago'),
+('Water Conservation Drive', 'Awareness on saving water', 4, '2026-05-22', 'Community Hall, Houston'),
+('Food for All Campaign', 'Mass food distribution event', 5, '2026-06-18', 'City Square, Phoenix'),
+('Global Literacy Day', 'Encouraging reading and education', 6, '2026-07-08', 'Central Library, Philadelphia'),
+('Community Health Camp', 'Free health checkups and consultations', 7, '2026-08-14', 'Health Center, San Antonio'),
+('Shelter Renovation Project', 'Improving facilities for the homeless', 8, '2026-09-25', 'Shelter Site, San Diego'),
+('Women Empowerment Forum', 'Workshops and networking for women', 9, '2026-10-12', 'Civic Center, Dallas'),
+('Tech for Change Hackathon', 'Innovative tech solutions for NGOs', 10, '2026-11-05', 'Innovation Hub, Austin'),
+('Child Education Fair', 'Showcasing educational initiatives', 1, '2026-12-20', 'Exhibition Hall, NY');
+
 SET SQL_SAFE_UPDATES = 1;

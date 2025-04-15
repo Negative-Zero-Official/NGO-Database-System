@@ -35,4 +35,13 @@ BEGIN
     INSERT INTO Events (name, description, ngo_id, event_date, location)
     VALUES (p_name, p_description, p_ngo_id, p_event_date, p_location);
 END //
+
+DROP PROCEDURE IF EXISTS GetTrusteeBeneficiaries //
+CREATE PROCEDURE GetTrusteeBeneficiaries(IN p_user_id INT)
+BEGIN
+    DECLARE v_ngo_id INT;
+    SELECT ngo_id INTO v_ngo_id FROM Trustees WHERE user_id = p_user_id;
+    SELECT * FROM Beneficiaries WHERE ngo_id = v_ngo_id;
+END //
+
 DELIMITER ;

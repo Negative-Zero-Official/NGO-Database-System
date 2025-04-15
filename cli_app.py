@@ -207,6 +207,21 @@ class NGOApp:
                 return
             else: print("Invalid choice!")
 
+    def view_trustee_beneficiaries(self):
+        beneficiaries = self.db.execute_query(
+            "CALL GetTrusteeBeneficiaries(%s)",
+            (self.current_user[0],),
+            fetch=True
+        )
+        if not beneficiaries:
+            print("No beneficiaries under your NGO.")
+            return
+        print("\nBeneficiaries under your NGO:")
+        for b in beneficiaries:
+            print(f"ID: {b[0]}, Name: {b[1]}, Age: {b[2]}, Gender: {b[3]}")
+            print(f"Support Received: {b[5]}\n")
+
+    # ----- Updated Trustee Menu -----
     def trustee_menu(self):
         while True:
             print("\nTrustee Menu")
@@ -216,7 +231,8 @@ class NGOApp:
             print("4. View NGO Ratings")
             print("5. View NGO Reviews")
             print("6. View Upcoming Events")
-            print("7. Logout")
+            print("7. View Beneficiaries")  # New option
+            print("8. Logout")
             choice = input("Choose: ")
             if choice == '1': self.create_event()
             elif choice == '2': self.view_donation_summary()
@@ -224,7 +240,8 @@ class NGOApp:
             elif choice == '4': self.view_ngo_ratings()
             elif choice == '5': self.view_ngo_reviews()
             elif choice == '6': self.view_upcoming_events()
-            elif choice == '7': 
+            elif choice == '7': self.view_trustee_beneficiaries()  # Call new method
+            elif choice == '8': 
                 self.current_user = None
                 return
             else: print("Invalid choice!")
@@ -244,12 +261,16 @@ class NGOApp:
             else: print("Invalid choice!")
 
     def run(self):
+        first_run = True  # Flag to track the first run
         while True:
             if not self.current_user:
-                choice = input("\nLogout successful. Exit program? (y/n): ").lower()
-                if choice == 'y':
-                    print("Exiting...")
-                    sys.exit()
+                if not first_run:
+                    print("\nLogout successful.")
+                    choice = input("Exit program? (y/n): ").lower()
+                    if choice == 'y':
+                        print("Exiting...")
+                        sys.exit()
+                first_run = False  # Set to False after the first iteration
                 self.login()
             else:
                 self.show_role_menu()
