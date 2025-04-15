@@ -1,4 +1,4 @@
-use NGO_Search_Engine;
+-- use NGO_Search_Engine;
 SET SQL_SAFE_UPDATES = 0;
 
 DELETE FROM Users;
@@ -37,16 +37,41 @@ ALTER TABLE Events AUTO_INCREMENT = 1;
 ALTER TABLE Reviews AUTO_INCREMENT = 1;
 
 INSERT INTO Users (username, email, password_hash) VALUES 
-('john_doe', 'john.doe@example.com', 'hashed_password_1'),
-('jane_smith', 'jane.smith@example.com', 'hashed_password_2'),
-('mike_johnson', 'mike.j@example.com', 'hashed_password_3'),
-('sarah_williams', 'sarah.w@example.com', 'hashed_password_4'),
-('david_brown', 'david.b@example.com', 'hashed_password_5'),
-('lisa_miller', 'lisa.m@example.com', 'hashed_password_6'),
-('robert_taylor', 'robert.t@example.com', 'hashed_password_7'),
-('emily_anderson', 'emily.a@example.com', 'hashed_password_8'),
-('thomas_moore', 'thomas.m@example.com', 'hashed_password_9'),
-('jennifer_lee', 'jennifer.l@example.com', 'hashed_password_10');
+-- Donors (1-10)
+('donor1', 'donor1@example.com', 'hashed_password_1'),
+('donor2', 'donor2@example.com', 'hashed_password_2'),
+('donor3', 'donor3@example.com', 'hashed_password_3'),
+('donor4', 'donor4@example.com', 'hashed_password_4'),
+('donor5', 'donor5@example.com', 'hashed_password_5'),
+('donor6', 'donor6@example.com', 'hashed_password_6'),
+('donor7', 'donor7@example.com', 'hashed_password_7'),
+('donor8', 'donor8@example.com', 'hashed_password_8'),
+('donor9', 'donor9@example.com', 'hashed_password_9'),
+('donor10', 'donor10@example.com', 'hashed_password_10'),
+
+-- Adopters (11-20)
+('adopter1', 'adopter1@example.com', 'hashed_password_11'),
+('adopter2', 'adopter2@example.com', 'hashed_password_12'),
+('adopter3', 'adopter3@example.com', 'hashed_password_13'),
+('adopter4', 'adopter4@example.com', 'hashed_password_14'),
+('adopter5', 'adopter5@example.com', 'hashed_password_15'),
+('adopter6', 'adopter6@example.com', 'hashed_password_16'),
+('adopter7', 'adopter7@example.com', 'hashed_password_17'),
+('adopter8', 'adopter8@example.com', 'hashed_password_18'),
+('adopter9', 'adopter9@example.com', 'hashed_password_19'),
+('adopter10', 'adopter10@example.com', 'hashed_password_20'),
+
+-- Trustees (21-30)
+('trustee1', 'trustee1@example.com', 'hashed_password_21'),
+('trustee2', 'trustee2@example.com', 'hashed_password_22'),
+('trustee3', 'trustee3@example.com', 'hashed_password_23'),
+('trustee4', 'trustee4@example.com', 'hashed_password_24'),
+('trustee5', 'trustee5@example.com', 'hashed_password_25'),
+('trustee6', 'trustee6@example.com', 'hashed_password_26'),
+('trustee7', 'trustee7@example.com', 'hashed_password_27'),
+('trustee8', 'trustee8@example.com', 'hashed_password_28'),
+('trustee9', 'trustee9@example.com', 'hashed_password_29'),
+('trustee10', 'trustee10@example.com', 'hashed_password_30');
 
 -- Insert unique data into Locations table
 INSERT INTO Locations (city, state, country, latitude, longitude) VALUES 
@@ -138,16 +163,16 @@ INSERT INTO Beneficiaries (name, age, gender, ngo_id, received_support) VALUES
 
 -- Insert unique data into Adopters table
 INSERT INTO Adopters (user_id, name, email, phone, address) VALUES 
-(1, 'John Doe', 'john.doe@family.com', '1112223333', '123 Main St, New York, NY'),
-(2, 'Jane Smith', 'jane.smith@family.com', '2223334444', '456 Oak Ave, Los Angeles, CA'),
-(3, 'Mike Johnson', 'mike.j@family.com', '3334445555', '789 Pine Rd, Chicago, IL'),
-(4, 'Sarah Williams', 'sarah.w@family.com', '4445556666', '321 Elm St, Houston, TX'),
-(5, 'David Brown', 'david.b@family.com', '5556667777', '654 Maple Dr, Phoenix, AZ'),
-(6, 'Lisa Miller', 'lisa.m@family.com', '6667778888', '987 Cedar Ln, Philadelphia, PA'),
-(7, 'Robert Taylor', 'robert.t@family.com', '7778889999', '159 Birch Blvd, San Antonio, TX'),
-(8, 'Emily Anderson', 'emily.a@family.com', '8889990000', '753 Spruce Way, San Diego, CA'),
-(9, 'Thomas Moore', 'thomas.m@family.com', '9990001111', '456 Redwood Cir, Dallas, TX'),
-(10, 'Jennifer Lee', 'jennifer.l@family.com', '0001112222', '789 Sequoia Ct, Austin, TX');
+(11, 'Alice Thompson', 'alice@family.com', '1112223333', '123 Main St, New York, NY'),
+(12, 'Bob Wilson', 'bob@family.com', '2223334444', '456 Oak Ave, Los Angeles, CA'),
+(13, 'Carol Martinez', 'carol@family.com', '3334445555', '789 Pine Rd, Chicago, IL'),
+(14, 'David Miller', 'david@family.com', '4445556666', '321 Elm St, Houston, TX'),
+(15, 'Eve Davis', 'eve@family.com', '5556667777', '654 Maple Dr, Phoenix, AZ'),
+(16, 'Frank Moore', 'frank@family.com', '6667778888', '987 Cedar Ln, Philadelphia, PA'),
+(17, 'Grace Taylor', 'grace@family.com', '7778889999', '159 Birch Blvd, San Antonio, TX'),
+(18, 'Henry White', 'henry@family.com', '8889990000', '753 Spruce Way, San Diego, CA'),
+(19, 'Ivy Clark', 'ivy@family.com', '9990001111', '456 Redwood Cir, Dallas, TX'),
+(20, 'Jack Lewis', 'jack@family.com', '0001112222', '789 Sequoia Ct, Austin, TX');
 
 -- Insert unique data into Adoptions table
 INSERT INTO Adoptions (adopter_id, beneficiary_id, adoption_date) VALUES 
@@ -164,16 +189,16 @@ INSERT INTO Adoptions (adopter_id, beneficiary_id, adoption_date) VALUES
 
 -- Insert unique data into Trustees table
 INSERT INTO Trustees (user_id, name, email, phone, position, ngo_id) VALUES 
-(1, 'John Doe', 'john.doe@trustee.org', '1112223333', 'Chairperson', 1),
-(2, 'Jane Smith', 'jane.smith@trustee.org', '2223334444', 'Secretary', 2),
-(3, 'Mike Johnson', 'mike.j@trustee.org', '3334445555', 'Treasurer', 3),
-(4, 'Sarah Williams', 'sarah.w@trustee.org', '4445556666', 'Director', 4),
-(5, 'David Brown', 'david.b@trustee.org', '5556667777', 'President', 5),
-(6, 'Lisa Miller', 'lisa.m@trustee.org', '6667778888', 'Vice President', 6),
-(7, 'Robert Taylor', 'robert.t@trustee.org', '7778889999', 'Board Member', 7),
-(8, 'Emily Anderson', 'emily.a@trustee.org', '8889990000', 'Executive Director', 8),
-(9, 'Thomas Moore', 'thomas.m@trustee.org', '9990001111', 'Program Manager', 9),
-(10, 'Jennifer Lee', 'jennifer.l@trustee.org', '0001112222', 'Development Officer', 10);
+(21, 'Olivia Green', 'olivia@trustee.org', '1112223333', 'Chairperson', 1),
+(22, 'Peter King', 'peter@trustee.org', '2223334444', 'Secretary', 2),
+(23, 'Quinn Scott', 'quinn@trustee.org', '3334445555', 'Treasurer', 3),
+(24, 'Rachel Young', 'rachel@trustee.org', '4445556666', 'Director', 4),
+(25, 'Samuel Hall', 'samuel@trustee.org', '5556667777', 'President', 5),
+(26, 'Tina Adams', 'tina@trustee.org', '6667778888', 'Vice President', 6),
+(27, 'Ulysses Reed', 'ulysses@trustee.org', '7778889999', 'Board Member', 7),
+(28, 'Victoria Cook', 'victoria@trustee.org', '8889990000', 'Executive Director', 8),
+(29, 'Walter Baker', 'walter@trustee.org', '9990001111', 'Program Manager', 9),
+(30, 'Xena Carter', 'xena@trustee.org', '0001112222', 'Development Officer', 10);
 
 -- Insert unique data into Events table
 INSERT INTO Events (name, description, ngo_id, event_date, location) VALUES 
