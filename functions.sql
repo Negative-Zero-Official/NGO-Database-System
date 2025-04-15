@@ -40,7 +40,13 @@ RETURNS VARCHAR(20)
 DETERMINISTIC
 BEGIN
     DECLARE role VARCHAR(20);
-    IF EXISTS (SELECT 1 FROM Donors WHERE user_id = p_user_id) THEN
+    DECLARE v_username VARCHAR(50);
+    
+    SELECT username INTO v_username FROM Users WHERE user_id = p_user_id;
+    
+    IF v_username = 'admin' THEN
+        SET role = 'Admin';
+    ELSEIF EXISTS (SELECT 1 FROM Donors WHERE user_id = p_user_id) THEN
         SET role = 'Donor';
     ELSEIF EXISTS (SELECT 1 FROM Adopters WHERE user_id = p_user_id) THEN
         SET role = 'Adopter';

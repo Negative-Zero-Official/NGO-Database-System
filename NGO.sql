@@ -1,5 +1,5 @@
 -- CREATE DATABASE NGO_Search_Engine;
-USE NGO_Search_Engine;
+-- USE NGO_Search_Engine;
 
 -- Drop tables safely (to avoid errors if they don't exist)
 DROP TABLE IF EXISTS Reviews;

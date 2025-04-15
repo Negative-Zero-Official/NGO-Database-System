@@ -250,4 +250,8 @@ INSERT INTO Events (name, description, ngo_id, event_date, location) VALUES
 ('Tech for Change Hackathon', 'Innovative tech solutions for NGOs', 10, '2026-11-05', 'Innovation Hub, Austin'),
 ('Child Education Fair', 'Showcasing educational initiatives', 1, '2026-12-20', 'Exhibition Hall, NY');
 
+-- Add at the end of the Users INSERT block
+INSERT INTO Users (username, email, password_hash) 
+VALUES ('admin', 'admin@ngo.org', '12345');
+
 SET SQL_SAFE_UPDATES = 1;

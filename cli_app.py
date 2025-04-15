@@ -5,6 +5,22 @@ class NGOApp:
     def __init__(self):
         self.db = DatabaseManager()
         self.current_user = None
+        self.table_columns = {
+            'Users': ['user_id', 'username', 'email', 'password_hash', 'created_at'],
+            'Locations': ['location_id', 'city', 'state', 'country', 'latitude', 'longitude'],
+            'NGOs': ['ngo_id', 'name', 'description', 'website', 'contact_email', 
+                     'contact_phone', 'location_id', 'created_at'],
+            'NGO_Categories': ['ngo_id', 'category_id', 'category_name'],
+            'Donors': ['donor_id', 'user_id', 'name', 'email', 'phone', 'donor_type', 'created_at'],
+            'Donations': ['donation_id', 'user_id', 'ngo_id', 'donor_id', 'amount', 
+                         'donation_date', 'payment_method'],
+            'Beneficiaries': ['beneficiary_id', 'name', 'age', 'gender', 'ngo_id', 'received_support'],
+            'Adopters': ['adopter_id', 'user_id', 'name', 'email', 'phone', 'address'],
+            'Adoptions': ['adoption_id', 'adopter_id', 'beneficiary_id', 'adoption_date'],
+            'Trustees': ['trustee_id', 'user_id', 'name', 'email', 'phone', 'position', 'ngo_id'],
+            'Events': ['event_id', 'name', 'description', 'ngo_id', 'event_date', 'location'],
+            'Reviews': ['review_id', 'user_id', 'ngo_id', 'rating', 'review_text', 'created_at']
+        }
 
     def login(self):
         username = input("Username: ")
@@ -157,12 +173,142 @@ class NGOApp:
             "SELECT GetUserRole(%s)", (self.current_user[0],), fetch=True
         )[0][0]
 
+    def add_ngo(self):
+        print("\nAdd New NGO")
+        name = input("Name: ")
+        desc = input("Description: ")
+        website = input("Website: ")
+        email = input("Contact Email: ")
+        phone = input("Contact Phone: ")
+        city = input("City: ")
+        state = input("State: ")
+        country = input("Country: ")
+        lat = float(input("Latitude: "))
+        lng = float(input("Longitude: "))
+        
+        self.db.execute_query(
+            "CALL AddNGO(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            (name, desc, website, email, phone, city, state, country, lat, lng)
+        )
+        print("NGO added successfully!")
+
+    def update_ngo(self):
+        self.list_ngos()
+        ngo_id = int(input("Enter NGO ID to update: "))
+        name = input("New Name (leave blank to keep current): ")
+        desc = input("New Description (leave blank to keep current): ")
+        website = input("New Website (leave blank to keep current): ")
+        email = input("New Email (leave blank to keep current): ")
+        phone = input("New Phone (leave blank to keep current): ")
+        
+        # Fetch current values if fields are blank
+        current = self.db.execute_query(
+            "SELECT name, description, website, contact_email, contact_phone FROM NGOs WHERE ngo_id = %s",
+            (ngo_id,),
+            fetch=True
+        )[0]
+        
+        name = name or current[0]
+        desc = desc or current[1]
+        website = website or current[2]
+        email = email or current[3]
+        phone = phone or current[4]
+        
+        self.db.execute_query(
+            "CALL UpdateNGO(%s, %s, %s, %s, %s, %s)",
+            (ngo_id, name, desc, website, email, phone)
+        )
+        print("NGO updated!")
+
+    def delete_ngo(self):
+        self.list_ngos()
+        ngo_id = int(input("Enter NGO ID to delete: "))
+        confirm = input(f"WARNING: This will permanently delete NGO {ngo_id}. Confirm? (y/n): ")
+        if confirm.lower() == 'y':
+            self.db.execute_query("CALL DeleteNGO(%s)", (ngo_id,))
+            print("NGO deleted.")
+        else:
+            print("Deletion canceled.")
+
+    def view_table_details(self):
+        tables = [
+            'Users', 'NGOs', 'Locations', 'Donors',
+            'Donations', 'Beneficiaries', 'Adopters',
+            'Adoptions', 'Trustees', 'Events', 'Reviews',
+            'NGO_Categories'
+        ]
+        print("\nAvailable Tables:")
+        for idx, table in enumerate(tables, 1):
+            print(f"{idx}. {table}")
+        
+        try:
+            choice = int(input("Select table (number): "))
+            table_name = tables[choice-1]
+        except (ValueError, IndexError):
+            print("Invalid selection!")
+            return
+        
+        try:
+            data = self.db.execute_query(
+                "CALL AdminGetTableData(%s)",
+                (table_name,),
+                fetch=True
+            )
+            if not data:
+                print(f"\n{table_name} table is empty.")
+                return
+                
+            print(f"\n{table_name} Table Data:")
+            for row in data:
+                print("\n" + "-"*40)
+                for idx, value in enumerate(row):
+                    print(f"{self.table_columns[table_name][idx]}: {value}")
+        except Exception as e:
+            print(f"Error: {e}")
+
+    # ----- Updated Admin Menu -----
+    def admin_menu(self):
+        while True:
+            print("\nAdmin Menu")
+            print("1. Add NGO")
+            print("2. Update NGO")
+            print("3. Delete NGO")
+            print("4. View NGO Ratings")
+            print("5. View NGO Reviews")
+            print("6. View Upcoming Events")
+            print("7. Submit Review")
+            print("8. View Table Details")  # New option
+            print("9. Logout")
+            choice = input("Choose: ")
+            if choice == '1': 
+                self.add_ngo()
+            elif choice == '2': 
+                self.update_ngo()
+            elif choice == '3': 
+                self.delete_ngo()
+            elif choice == '4': 
+                self.view_ngo_ratings()  # Inherited from general features
+            elif choice == '5': 
+                self.view_ngo_reviews()  # Inherited from general features
+            elif choice == '6': 
+                self.view_upcoming_events()  # Inherited from general features
+            elif choice == '7': 
+                self.submit_review()  # Inherited from general features
+            elif choice == '8':
+                self.view_table_details()
+            elif choice == '9':
+                self.current_user = None
+                return
+            else: 
+                print("Invalid choice!")
+
     def show_role_menu(self):
         role = self.get_user_role()
         {
             'Donor': self.donor_menu,
             'Adopter': self.adopter_menu,
-            'Trustee': self.trustee_menu
+            'Trustee': self.trustee_menu,
+            'Admin': self.admin_menu
         }.get(role, self.general_menu)()
 
     def donor_menu(self):
