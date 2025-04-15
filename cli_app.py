@@ -6,7 +6,6 @@ class NGOApp:
         self.db = DatabaseManager()
         self.current_user = None
 
-    # ----- Authentication Flow -----
     def login(self):
         username = input("Username: ")
         password = input("Password: ")
@@ -24,7 +23,6 @@ class NGOApp:
         else:
             print("Invalid credentials!")
 
-    # ----- Donor Features -----
     def make_donation(self):
         self.list_ngos()
         ngo_id = int(input("Enter NGO ID: "))
@@ -38,7 +36,6 @@ class NGOApp:
         )
         print("Donation recorded!")
 
-    # ----- Adopter Features -----
     def view_available_beneficiaries(self):
         beneficiaries = self.db.execute_query(
             "SELECT * FROM Available_Beneficiaries_View", fetch=True
@@ -50,7 +47,6 @@ class NGOApp:
         self.view_available_beneficiaries()
         beneficiary_id = int(input("Enter Beneficiary ID: "))
         
-        # Check adoption conflict using SQL function
         conflict = self.db.execute_query(
             "SELECT CheckAdoptionConflict(%s)", (beneficiary_id,), fetch=True
         )[0][0]
@@ -66,7 +62,6 @@ class NGOApp:
         )
         print("Adoption successful!")
 
-    # ----- Trustee Features -----
     def get_trustee_ngo(self):
         result = self.db.execute_query(
             "SELECT ngo_id FROM Trustees WHERE user_id = %s",
@@ -96,13 +91,13 @@ class NGOApp:
         )
         if summary:
             data = summary[0]
+            print(f"\nNGO: {data[1]}")
             print(f"Total Donations: ${data[2]:.2f} ({data[3]} donations)")
 
-    # ----- Shared Features -----
     def submit_review(self):
         self.list_ngos()
         ngo_id = int(input("NGO ID: "))
-        rating = int(input("Rating (1-5): "))
+        rating = int(input("Rating (1-5: "))
         text = input("Review text: ")
         
         try:
@@ -138,7 +133,20 @@ class NGOApp:
             print(f"Date: {date}")
             print(f"Text: {text}")
 
-    # ----- Helper Methods -----
+    def view_upcoming_events(self):
+        events = self.db.execute_query(
+            "SELECT * FROM Upcoming_Events_View", 
+            fetch=True
+        )
+        if not events:
+            print("No upcoming events.")
+            return
+        for event in events:
+            print(f"\nEvent: {event[1]}")
+            print(f"Date: {event[4]}")
+            print(f"Location: {event[5]}")
+            print(f"Description: {event[2]}")
+
     def list_ngos(self):
         ngos = self.db.execute_query("SELECT * FROM NGOs", fetch=True)
         for n in ngos:
@@ -157,29 +165,25 @@ class NGOApp:
             'Trustee': self.trustee_menu
         }.get(role, self.general_menu)()
 
-    # ----- Menu Structures -----
     def donor_menu(self):
         while True:
             print("\nDonor Menu")
             print("1. Make Donation")
             print("2. View NGO Ratings")
             print("3. View NGO Reviews")
-            print("4. Submit Review")
-            print("5. Logout")
+            print("4. View Upcoming Events")
+            print("5. Submit Review")
+            print("6. Logout")
             choice = input("Choose: ")
-            if choice == '1':
-                self.make_donation()
-            elif choice == '2':
-                self.view_ngo_ratings()
-            elif choice == '3':
-                self.view_ngo_reviews()
-            elif choice == '4':
-                self.submit_review()
-            elif choice == '5':
+            if choice == '1': self.make_donation()
+            elif choice == '2': self.view_ngo_ratings()
+            elif choice == '3': self.view_ngo_reviews()
+            elif choice == '4': self.view_upcoming_events()
+            elif choice == '5': self.submit_review()
+            elif choice == '6': 
                 self.current_user = None
                 return
-            else:
-                print("Invalid choice!")
+            else: print("Invalid choice!")
 
     def adopter_menu(self):
         while True:
@@ -189,23 +193,19 @@ class NGOApp:
             print("3. Submit Review")
             print("4. View NGO Ratings")
             print("5. View NGO Reviews")
-            print("6. Logout")
+            print("6. View Upcoming Events")
+            print("7. Logout")
             choice = input("Choose: ")
-            if choice == '1':
-                self.view_available_beneficiaries()
-            elif choice == '2':
-                self.adopt_beneficiary()
-            elif choice == '3':
-                self.submit_review()
-            elif choice == '4':
-                self.view_ngo_ratings()
-            elif choice == '5':
-                self.view_ngo_reviews()
-            elif choice == '6':
+            if choice == '1': self.view_available_beneficiaries()
+            elif choice == '2': self.adopt_beneficiary()
+            elif choice == '3': self.submit_review()
+            elif choice == '4': self.view_ngo_ratings()
+            elif choice == '5': self.view_ngo_reviews()
+            elif choice == '6': self.view_upcoming_events()
+            elif choice == '7': 
                 self.current_user = None
                 return
-            else:
-                print("Invalid choice!")
+            else: print("Invalid choice!")
 
     def trustee_menu(self):
         while True:
@@ -215,44 +215,41 @@ class NGOApp:
             print("3. Submit Review")
             print("4. View NGO Ratings")
             print("5. View NGO Reviews")
-            print("6. Logout")
+            print("6. View Upcoming Events")
+            print("7. Logout")
             choice = input("Choose: ")
-            if choice == '1':
-                self.create_event()
-            elif choice == '2':
-                self.view_donation_summary()
-            elif choice == '3':
-                self.submit_review()
-            elif choice == '4':
-                self.view_ngo_ratings()
-            elif choice == '5':
-                self.view_ngo_reviews()
-            elif choice == '6':
+            if choice == '1': self.create_event()
+            elif choice == '2': self.view_donation_summary()
+            elif choice == '3': self.submit_review()
+            elif choice == '4': self.view_ngo_ratings()
+            elif choice == '5': self.view_ngo_reviews()
+            elif choice == '6': self.view_upcoming_events()
+            elif choice == '7': 
                 self.current_user = None
                 return
-            else:
-                print("Invalid choice!")
+            else: print("Invalid choice!")
 
     def general_menu(self):
         while True:
             print("\nGeneral User Menu")
             print("1. View NGO Ratings")
             print("2. View NGO Reviews")
-            print("3. Exit")
+            print("3. View Upcoming Events")
+            print("4. Exit")
             choice = input("Choose: ")
-            if choice == '1':
-                self.view_ngo_ratings()
-            elif choice == '2':
-                self.view_ngo_reviews()
-            elif choice == '3':
-                sys.exit()
-            else:
-                print("Invalid choice!")
+            if choice == '1': self.view_ngo_ratings()
+            elif choice == '2': self.view_ngo_reviews()
+            elif choice == '3': self.view_upcoming_events()
+            elif choice == '4': sys.exit()
+            else: print("Invalid choice!")
 
-    # ----- Main Loop -----
     def run(self):
         while True:
             if not self.current_user:
+                choice = input("\nLogout successful. Exit program? (y/n): ").lower()
+                if choice == 'y':
+                    print("Exiting...")
+                    sys.exit()
                 self.login()
             else:
                 self.show_role_menu()
