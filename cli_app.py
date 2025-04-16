@@ -62,21 +62,34 @@ class NGOApp:
     def adopt_beneficiary(self):
         self.view_available_beneficiaries()
         beneficiary_id = int(input("Enter Beneficiary ID: "))
-        
+
         conflict = self.db.execute_query(
             "SELECT CheckAdoptionConflict(%s)", (beneficiary_id,), fetch=True
         )[0][0]
-        
+
         if conflict:
             print("Already adopted!")
             return
-            
+
+        # Fetch adopter_id using current user's user_id
+        result = self.db.execute_query(
+            "SELECT adopter_id FROM Adopters WHERE user_id = %s",
+            (self.current_user[0],),
+            fetch=True
+        )
+        if not result:
+            print("You are not registered as an adopter.")
+            return
+
+        adopter_id = result[0][0]
+
         self.db.execute_query(
             "INSERT INTO Adoptions (adopter_id, beneficiary_id, adoption_date) "
             "VALUES (%s, %s, CURDATE())",
-            (self.current_user[0], beneficiary_id)
+            (adopter_id, beneficiary_id)
         )
         print("Adoption successful!")
+
 
     def get_trustee_ngo(self):
         result = self.db.execute_query(
